@@ -4,6 +4,21 @@ require "c/string"
 module LLVM
   @@initialized = false
 
+  def self.init_webassembly
+    return if @@initialized_webassembly
+    @@initialized_webassembly = true
+
+    {% if LibLLVM::BUILT_TARGETS.includes?(:webassembly) %}
+      LibLLVM.initialize_webassembly_target_info
+      LibLLVM.initialize_webassembly_target
+      LibLLVM.initialize_webassembly_target_mc
+      LibLLVM.initialize_webassembly_asm_printer
+      LibLLVM.initialize_webassembly_asm_parser
+    {% else %}
+      raise "ERROR: LLVM was built without WebAssembly target"
+    {% end %}
+  end
+
   def self.init_x86
     return if @@initialized_x86
     @@initialized_x86 = true

@@ -27,6 +27,8 @@ class Crystal::Codegen::Target
       @architecture = "x86_64"
     when .starts_with?("arm")
       @architecture = "arm"
+    when .starts_with?("wasm")
+      @architecture = "wasm32"
     else
       # no need to tweak the architecture
     end
@@ -133,6 +135,8 @@ class Crystal::Codegen::Target
       LLVM.init_x86
     when "aarch64"
       LLVM.init_aarch64
+    when "wasm32"
+      LLVM.init_webassembly
     when "arm"
       LLVM.init_arm
 
