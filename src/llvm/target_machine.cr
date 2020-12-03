@@ -49,7 +49,7 @@ class LLVM::TargetMachine
     case triple
     when /x86_64.+windows-msvc/
       ABI::X86_Win64.new(self)
-    when /x86_64|amd64/
+    when /x86_64|amd64|wasm32/
       ABI::X86_64.new(self)
     when /i386|i486|i586|i686/
       ABI::X86.new(self)

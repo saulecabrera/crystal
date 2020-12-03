@@ -367,6 +367,11 @@ module Crystal
         link_flags = @link_flags || ""
         link_flags += " -rdynamic"
 
+        puts "IN COMPILER"
+        puts link_flags
+        puts %(#{cc} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags})
+        puts object_names
+
         { %(#{cc} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags}), object_names }
       end
     end
@@ -697,10 +702,12 @@ module Crystal
           end
         end
 
+        puts "File bc_name #{bc_name}"
+
         # If there's a memory buffer, it means we must create a .o from it
         if memory_buffer
           # Delete existing .o file. It cannot be used anymore.
-          File.delete(object_name) if File.exists?(object_name)
+          # File.delete(object_name) if File.exists?(object_name)
           # Create the .bc file (for next compilations)
           File.write(bc_name, memory_buffer.to_slice)
           memory_buffer.dispose

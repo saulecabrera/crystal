@@ -5,7 +5,7 @@ require "c/stdio"
 require "c/string"
 require "./lib_unwind"
 
-{% if flag?(:darwin) || flag?(:bsd) || flag?(:linux) %}
+{% if flag?(:darwin) || flag?(:bsd) || flag?(:linux) || flag?(:wasm32) %}
   require "./call_stack/dwarf"
 {% else %}
   require "./call_stack/null"

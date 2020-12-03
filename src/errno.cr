@@ -2,7 +2,7 @@ require "c/errno"
 require "c/string"
 
 lib LibC
-  {% if flag?(:linux) || flag?(:dragonfly) %}
+  {% if flag?(:linux) || flag?(:dragonfly) || flag?(:wasm32) %}
     fun __errno_location : Int*
   {% elsif flag?(:darwin) || flag?(:freebsd) %}
     fun __error : Int*
@@ -41,7 +41,7 @@ enum Errno
 
   # Returns the value of libc's errno.
   def self.value : self
-    {% if flag?(:linux) || flag?(:dragonfly) %}
+    {% if flag?(:linux) || flag?(:dragonfly) || flag?(:wasm32) %}
       Errno.new LibC.__errno_location.value
     {% elsif flag?(:darwin) || flag?(:bsd) %}
       Errno.new LibC.__error.value

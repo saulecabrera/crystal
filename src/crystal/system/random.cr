@@ -14,7 +14,7 @@ end
   require "./unix/getrandom"
 {% elsif flag?(:openbsd) || flag?(:netbsd) %}
   require "./unix/arc4random"
-{% elsif flag?(:unix) %}
+{% elsif flag?(:unix) || flag?(:wasm32) %}
   require "./unix/urandom"
 {% elsif flag?(:win32) %}
   require "./win32/random"

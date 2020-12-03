@@ -8,7 +8,7 @@ module Crystal::System
   # def self.cpu_count
 end
 
-{% if flag?(:unix) %}
+{% if flag?(:unix) || flag?(:wasm32) %}
   require "./system/unix/hostname"
 
   {% if flag?(:bsd) %}
