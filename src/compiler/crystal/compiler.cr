@@ -370,9 +370,10 @@ module Crystal
         puts "IN COMPILER"
         puts link_flags
         puts %(#{cc} "${@}" -o #{Process.quote_posix(output_filename)} #{link_flags} #{program.lib_flags})
-        wld = "wasm-ld"
+        wld = ENV["WASMLD"]
+        libc = ENV["LIBC"]
 
-        { %(#{wld} "${@}" -o #{Process.quote_posix(output_filename)} #{"--no-entry --export-all --allow-undefined ~/Developer/wasi-libc/sysroot/lib/wasm32-wasi/libc.a"} #{""}), object_names }
+        { %(#{wld} "${@}" -o #{Process.quote_posix(output_filename)} #{"--no-entry --export-all --allow-undefined #{libc}"} #{""}), object_names }
       end
     end
 
