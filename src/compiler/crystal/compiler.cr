@@ -373,7 +373,7 @@ module Crystal
         wld = ENV["WASMLD"]
         libc = ENV["LIBC"]
 
-        { %(#{wld} "${@}" -o #{Process.quote_posix(output_filename)} #{"--no-entry --export-all --allow-undefined #{libc}"} #{""}), object_names }
+        { %(#{wld} "${@}" -o #{Process.quote_posix(output_filename)} #{"--no-entry --export-all --allow-undefined #{libc} -O3"} #{""}), object_names }
       end
     end
 

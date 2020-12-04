@@ -6,7 +6,11 @@ require "../program"
 require "./llvm_builder_helper"
 
 module Crystal
-  MAIN_NAME           = "__crystal_main"
+  {% unless flag?(:wasm32) %}
+    MAIN_NAME           = "__crystal_main"
+  {% else %}
+    MAIN_NAME = "_start"
+  {% end %}
   RAISE_NAME          = "__crystal_raise"
   RAISE_OVERFLOW_NAME = "__crystal_raise_overflow"
   MALLOC_NAME         = "__crystal_malloc64"

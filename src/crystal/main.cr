@@ -1,6 +1,7 @@
 lib LibCrystalMain
   @[Raises]
   fun __crystal_main(argc : Int32, argv : UInt8**)
+  fun _start
 end
 
 module Crystal
@@ -102,7 +103,11 @@ module Crystal
   # redefine C's main function. See `Crystal.main` for
   # more details.
   def self.main_user_code(argc : Int32, argv : UInt8**)
-    LibCrystalMain.__crystal_main(argc, argv)
+    {% unless flag?(:wasm32) %}
+      LibCrystalMain.__crystal_main(argc, argv)
+    {% else %}
+      LibCrystalMain._start
+    {% end %}
   end
 end
 
