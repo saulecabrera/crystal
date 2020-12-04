@@ -1,11 +1,11 @@
-{% skip_file if flag?(:win32) %}
+{% skip_file if flag?(:win32) || flag?(:wasm32) %}
 
 require "c/dlfcn"
 require "c/stdio"
 require "c/string"
 require "./lib_unwind"
 
-{% if flag?(:darwin) || flag?(:bsd) || flag?(:linux) || flag?(:wasm32) %}
+{% if flag?(:darwin) || flag?(:bsd) || flag?(:linux) %}
   require "./call_stack/dwarf"
 {% else %}
   require "./call_stack/null"

@@ -17,9 +17,9 @@ class Thread
   end
 end
 
-{% if flag?(:unix) || flag?(:wasm32) %}
+{% if flag?(:unix) %}
   require "./unix/pthread_mutex"
-{% elsif flag?(:win32) %}
+{% elsif flag?(:win32) || flag?(:wasm32) %}
   require "./win32/thread_mutex"
 {% else %}
   {% raise "thread not supported" %}

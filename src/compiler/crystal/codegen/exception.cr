@@ -61,6 +61,7 @@ class Crystal::CodeGenVisitor
     # Note we codegen the ensure body three times! In practice this isn't a big deal, since ensure bodies are typically small.
 
     windows = @program.has_flag? "windows"
+    wasm = @program.has_flag? "wasm32"
 
     context.fun.personality_function = windows_personality_fun if windows
 
@@ -278,9 +279,11 @@ class Crystal::CodeGenVisitor
   end
 
   def codegen_re_raise(node, unwind_ex_obj)
-    if @program.has_flag? "windows"
+    if @program.has_flag?("windows")
       # On windows we can re-raise by calling _CxxThrowException with two null arguments
       call windows_throw_fun, [llvm_context.void_pointer.null, llvm_context.void_pointer.null]
+      unreachable
+    elsif @program.has_flag?("wasm32")
       unreachable
     else
       raise_fun = main_fun(RAISE_NAME)

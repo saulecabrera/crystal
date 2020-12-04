@@ -1,4 +1,4 @@
-{% unless flag?(:win32) %}
+{% unless (flag?(:win32) || flag?(:wasm32)) %}
   @[Link("pthread")]
   lib LibC
   end

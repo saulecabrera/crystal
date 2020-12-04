@@ -16,6 +16,9 @@ require "comparable"
 {% if flag?(:win32) %}
   require "windows_stubs"
 {% end %}
+{% if flag?(:wasm32) %}
+  require "wasm_stubs"
+{% end %}
 require "exception"
 require "iterable"
 require "iterator"
@@ -51,7 +54,7 @@ require "intrinsics"
 require "io"
 require "kernel"
 require "math/math"
-{% unless flag?(:win32) %}
+{% unless (flag?(:win32) || flag?(:wasm32)) %}
   require "mutex"
 {% end %}
 require "named_tuple"
@@ -69,7 +72,7 @@ require "range"
 require "reference"
 require "regex"
 require "set"
-{% unless flag?(:win32) %}
+{% unless (flag?(:win32) || flag?(:wasm32)) %}
   require "signal"
 {% end %}
 require "slice"

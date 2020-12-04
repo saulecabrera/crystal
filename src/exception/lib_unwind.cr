@@ -109,6 +109,15 @@ lib LibUnwind
     fun vrs_get = _Unwind_VRS_Get(context : Context, regclass : UVRSC, regno : UInt32, representation : UVRSD, valuep : Void*) : UVRSR
     fun vrs_set = _Unwind_VRS_Set(context : Context, regclass : UVRSC, regno : UInt32, representation : UVRSD, valuep : Void*) : UVRSR
     fun __gnu_unwind_frame(ucb : ControlBlock*, context : Context) : ReasonCode
+  {% elsif flag?(:wasm32) %}
+    struct Exception
+      exception_class : LibC::SizeT
+      exception_cleanup : LibC::SizeT
+      private1 : UInt64
+      private2 : UInt64
+      exception_object : Void*
+      exception_type_id : Int32
+    end
   {% else %}
     struct Exception
       exception_class : LibC::SizeT

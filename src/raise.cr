@@ -169,6 +169,33 @@ end
 
     __crystal_continue_unwind
   end
+{% elsif flag?(:wasm32) %}
+  require "exception/lib_unwind"
+
+  # :nodoc:
+  fun __crystal_personality(version : Int32, actions : LibUnwind::Action, exception_class : UInt64, exception_object : LibUnwind::Exception*, context : Void*) : LibUnwind::ReasonCode
+    return LibUnwind::ReasonCode::END_OF_STACK
+  end
+
+  # Raises the *exception*.
+  #
+  # This will set the exception's callstack if it hasn't been already.
+  # Re-raising a previously caught exception won't replace the callstack.
+  def raise(exception : Exception) : NoReturn
+    LibC.exit(1)
+  end
+
+  # :nodoc:
+  @[Raises]
+  fun __crystal_raise(unwind_ex : LibUnwind::Exception*) : NoReturn
+    LibC.printf("EXITING: __crystal_raise called")
+    LibC.exit(1)
+  end
+
+  # :nodoc:
+  fun __crystal_get_exception(unwind_ex : LibUnwind::Exception*) : UInt64
+    unwind_ex.value.exception_object.address
+  end
 {% else %}
   # :nodoc:
   fun __crystal_personality(version : Int32, actions : LibUnwind::Action, exception_class : UInt64, exception_object : LibUnwind::Exception*, context : Void*) : LibUnwind::ReasonCode
@@ -188,7 +215,7 @@ end
   end
 {% end %}
 
-{% unless flag?(:win32) %}
+{% unless (flag?(:win32) || flag?(:wasm32)) %}
   # :nodoc:
   @[Raises]
   fun __crystal_raise(unwind_ex : LibUnwind::Exception*) : NoReturn
